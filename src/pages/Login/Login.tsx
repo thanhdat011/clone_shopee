@@ -10,9 +10,10 @@ import { AppContext } from '../../contexts/app.context'
 import { ErrorResponse } from '../../types/utils.type'
 import { schema, Schema } from '../../utils/rules'
 import { isAxiosUnprocessableEntity } from '../../utils/utils'
+import { ObjectSchema } from 'yup'
 
-type FormData = Omit<Schema, 'confirm_password'>
-const loginSchema = schema.omit(['confirm_password'])
+type FormData = Pick<Schema, 'email' | 'password'>
+const loginSchema = schema.pick(['email', 'password'])
 export default function Login() {
   const { setIsAuthenticated, setProfile } = useContext(AppContext)
   const navigate = useNavigate()
