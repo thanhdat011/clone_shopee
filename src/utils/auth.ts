@@ -1,4 +1,3 @@
-import { json } from 'stream/consumers'
 import { User } from '../types/user.type'
 
 export const setAccessTokenToLS = (access_token: string) => {

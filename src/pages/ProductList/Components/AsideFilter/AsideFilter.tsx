@@ -1,4 +1,4 @@
-import { createSearchParams, data, Link, useNavigate } from 'react-router-dom'
+import { createSearchParams, Link, useNavigate } from 'react-router-dom'
 import path from '../../../../constants/path'
 import Button from '../../../../components/Button'
 import { QueryConfig } from '../../ProductList'
@@ -25,7 +25,6 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
   const {
     control,
     handleSubmit,
-    watch,
     trigger,
     formState: { errors }
   } = useForm<FormData>({
@@ -36,7 +35,6 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
     resolver: yupResolver<FormData>(priceSchema as ObjectSchema<FormData>)
   })
   const navigate = useNavigate()
-  const valueForm = watch()
   const onSubmit = handleSubmit((data) => {
     navigate({
       pathname: path.home,
