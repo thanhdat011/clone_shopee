@@ -34,6 +34,7 @@ export default function Header() {
   const handleLogout = () => {
     logouMutation.mutate()
   }
+
   const onSubmitSearch = handleSubmit((data) => {
     const config = queryConfig.order
       ? omit(

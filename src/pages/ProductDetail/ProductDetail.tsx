@@ -6,7 +6,8 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import InputNumber from '../../components/InputNumber'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Product } from '../../types/product.type'
+import { Product as ProductType, ProductListConfig } from '../../types/product.type'
+import Product from '../ProductList/Components/Product'
 
 export default function ProductDetail() {
   const { nameId } = useParams()
@@ -23,13 +24,23 @@ export default function ProductDetail() {
     () => (product ? product.images.slice(...currentIndexImages) : []),
     [product, currentIndexImages]
   )
+  const queryConfig: ProductListConfig = { limit: '20', page: '1', category: product?.category._id }
+  const { data: productData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => {
+      return productApi.getProduct(queryConfig)
+    },
+    staleTime: 3 * 60 * 1000,
+    enabled: Boolean(product)
+  })
+  console.log(productData)
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImages(product.images[0])
     }
   }, [product])
   const next = () => {
-    if (currentIndexImages[1] < (product as Product)?.images.length) {
+    if (currentIndexImages[1] < (product as ProductType)?.images.length) {
       setCurrentIndexImages((prev) => [prev[0] + 1, prev[1] + 1])
     }
   }
@@ -234,7 +245,16 @@ export default function ProductDetail() {
 
       <div className='mt-8'>
         <div className='container'>
-          <div className='uppercase text-gray-400'>CÓ THỂ BẠN CŨNG THÍCH</div>
+          <div className='uppercase text-gray-400'>Có thể bạn cũng thích</div>
+          {productData && (
+            <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'>
+              {productData.data.data.products.map((product) => (
+                <div className='col-span-1' key={product._id}>
+                  <Product product={product} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
