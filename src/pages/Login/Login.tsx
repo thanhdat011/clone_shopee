@@ -10,7 +10,6 @@ import { AppContext } from '../../contexts/app.context'
 import { ErrorResponse } from '../../types/utils.type'
 import { schema, Schema } from '../../utils/rules'
 import { isAxiosUnprocessableEntity } from '../../utils/utils'
-import { ObjectSchema } from 'yup'
 
 type FormData = Pick<Schema, 'email' | 'password'>
 const loginSchema = schema.pick(['email', 'password'])
