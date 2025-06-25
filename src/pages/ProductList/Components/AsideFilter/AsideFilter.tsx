@@ -37,7 +37,6 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
   })
   const navigate = useNavigate()
   const valueForm = watch()
-  console.log(valueForm)
   const onSubmit = handleSubmit((data) => {
     navigate({
       pathname: path.home,
