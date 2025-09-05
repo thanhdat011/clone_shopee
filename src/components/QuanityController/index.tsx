@@ -1,3 +1,3 @@
-import QuanityController from './QuanityController'
+import QuantityController from './QuantityController'
 
-export default QuanityController
+export default QuantityController

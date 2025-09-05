@@ -7,11 +7,11 @@ import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Product as ProductType, ProductListConfig } from '../../types/product.type'
 import Product from '../ProductList/Components/Product'
-import QuanityController from '../../components/QuanityController'
 import purchaseApi from '../../apis/purchase.api'
 import { toast } from 'react-toastify'
 import { queryClient } from '../../main'
 import { purchasesStatus } from '../../constants/purchase'
+import QuantityController from '../../components/QuanityController'
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -180,7 +180,7 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <QuanityController
+                <QuantityController
                   onDecrease={hanleBuyCount}
                   onIncrease={hanleBuyCount}
                   onType={hanleBuyCount}

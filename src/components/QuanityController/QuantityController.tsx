@@ -10,7 +10,7 @@ interface Props extends InputNumberProps {
   classNameWrapper?: string
 }
 
-export default function QuanityController({
+export default function QuantityController({
   max,
   onIncrease,
   onDecrease,
