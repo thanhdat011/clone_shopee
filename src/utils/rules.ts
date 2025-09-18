@@ -3,6 +3,7 @@ import * as yup from 'yup'
 
 type Rules = { [key in 'email' | 'password' | 'confirm_password']?: RegisterOptions }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   email: {
     required: {
@@ -93,5 +94,17 @@ export const schema = yup.object({
   }),
   name: yup.string().trim().required('Tên sản phẩm là bắt buộc')
 })
+
+export const userSchema = yup.object({
+  name: yup.string().max(160, 'Tên không được vượt quá 160 ký tự'),
+  phone: yup.string().max(20, 'Số điện thoại không được vượt quá 20 ký tự'),
+  address: yup.string().max(160, 'Địa chỉ không được vượt quá 160 ký tự'),
+  date_of_birth: yup.date().max(new Date(), 'Hãy chọn 1 ngày trong quá khứ'),
+  avatar: yup.string().max(1000, 'Link avatar không được vượt quá 1000 ký tự'),
+  password: schema.fields['password'],
+  new_password: schema.fields['password'],
+  confirm_password: schema.fields['confirm_password']
+})
+export type UserSchema = yup.InferType<typeof userSchema>
 
 export type Schema = yup.InferType<typeof schema>
