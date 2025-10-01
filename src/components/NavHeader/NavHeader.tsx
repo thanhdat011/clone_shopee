@@ -6,6 +6,7 @@ import path from '../../constants/path'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from '../../apis/auth.api'
 import { purchasesStatus } from '../../constants/purchase'
+import userImage from 'src/assets/images/user.svg'
 
 export default function NavHeader() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -64,7 +65,7 @@ export default function NavHeader() {
       </Popover>
       {isAuthenticated && (
         <Popover
-          className='flex cursor-pointer items-center py-1 hover:text-gray-300'
+          className='ml-6 flex cursor-pointer items-center py-1 hover:text-gray-300'
           renderPopover={
             <div className='relative rounded-sm border border-gray-200 bg-white shadow-md'>
               <Link
@@ -86,11 +87,7 @@ export default function NavHeader() {
           }
         >
           <div className='flex-shink-0 mr-2 h-6 w-6'>
-            <img
-              src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
-              alt='avatar'
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={profile?.avatar || userImage} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.email}</div>
         </Popover>

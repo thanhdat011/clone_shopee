@@ -1,25 +1,30 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import InputNumber from 'src/components/InputNumber'
 import { UserSchema, userSchema } from 'src/utils/rules'
 import DateSelect from '../../components/DateSelect'
-import { aw } from 'framer-motion/dist/types.d-6pKw1mTI'
+import { toast } from 'react-toastify'
+import { AppContext } from 'src/contexts/app.context'
+import userApi from 'src/apis/user.api'
+import { setProfileToLS } from 'src/utils/auth'
 
 type FormData = Pick<UserSchema, 'name' | 'address' | 'phone' | 'date_of_birth' | 'avatar'>
 const profileSchema = userSchema.pick(['name', 'address', 'phone', 'date_of_birth', 'avatar'])
 
 export default function Profile() {
-  const { data: profileData } = useQuery({
+  const { setProfile } = useContext(AppContext)
+  const { data: profileData, refetch } = useQuery({
     queryKey: [['profile']],
     queryFn: userApi.getProfile
   })
   const profile = profileData?.data.data
-  const updateProfileMutation = useMutation(userApi.updateProfile)
+  const updateProfileMutation = useMutation({
+    mutationFn: userApi.updateProfile
+  })
   const {
     register,
     control,
@@ -50,7 +55,11 @@ export default function Profile() {
 
   const onSubmit = handleSubmit(async (data) => {
     console.log(data)
-    // await updateProfileMutation.mutateAsync({})
+    const res = await updateProfileMutation.mutateAsync({ ...data, date_of_birth: data.date_of_birth?.toISOString() })
+    setProfile(res.data.data)
+    setProfileToLS(res.data.data)
+    refetch()
+    toast.success(res.data.message, { autoClose: 1000 })
   })
   return (
     <div className='rounded-sm bg-white px-2 pb-10 shadow md:px-7 md:pb-20'>
